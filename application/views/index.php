@@ -56,7 +56,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									Inventory
 								</a>
 							</li>
-
+							<!-- <li class="nav-item">
+								<a class="nav-link" href="#" value="history">
+									<i class="fa fa-history"></i>
+									History
+								</a>
+							</li> -->
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#" value="category">
@@ -70,6 +75,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									Subcategory
 								</a>
 							</li>
+
 						</ul>
 
 						<!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">

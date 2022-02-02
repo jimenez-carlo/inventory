@@ -14,17 +14,18 @@ class App extends CI_Controller
 	{
 		$this->load->view('index');
 	}
+
 	public function Header($type)
 	{
-
 		$this->load->view('components/header/' . $type);
 	}
+
 	public function Body($type, $name)
 	{
 		$post = $this->input->post();
 		$data['init'] = true;
 		if ($type == 'form') {
-			if(strpos($name, 'edit') !== false){
+			if (strpos($name, 'edit') !== false) {
 				$clean_type = str_replace('_edit', '', $name);
 				$temp = $this->app->GetOne($clean_type, $post['id']);
 				$data['default'] = $temp;
@@ -32,18 +33,18 @@ class App extends CI_Controller
 				if ($clean_type == 'inventory') {
 					$data['subcategory'] = $this->app->GetSubCategory($temp->category_id);
 				}
-			}else{
+			} else {
 				$data['category']    = $this->app->GetCategory();
 				$data['subcategory'] = $this->app->GetSubCategory();
 			}
 			$this->load->view('components/form/' . $name, $data);
 		} else {
-			$data['content'] = $this->TableData($name);
+			$data['content'] = $this->TableData($name, $post['id']);
 			$this->load->view('components/table/' . $name, $data);
 		}
 	}
 
-	public function TableData($name)
+	public function TableData($name, $id = null)
 	{
 		switch ($name) {
 			case 'inventory':
@@ -54,6 +55,9 @@ class App extends CI_Controller
 				break;
 			case 'subcategory':
 				return $this->app->GetSubCategory();
+				break;
+			case 'item_history':
+				return $this->app->GetItemHistory($id);
 				break;
 		}
 	}
@@ -72,27 +76,28 @@ class App extends CI_Controller
 			echo $this->app->UpdateItem();
 		} else if (isset($post['UpdateCategory'])) {
 			echo $this->app->UpdateCategory();
-		}else if (isset($post['UpdateSubCategory'])) {
+		} else if (isset($post['UpdateSubCategory'])) {
 			echo $this->app->UpdateSubCategory();
-		}else if (isset($post['DeleteCategory'])) {
+		} else if (isset($post['DeleteCategory'])) {
 			echo $this->app->DeleteCategory();
-		}else if (isset($post['DeleteSubCategory'])) {
+		} else if (isset($post['DeleteSubCategory'])) {
 			echo $this->app->DeleteSubCategory();
-		}else if (isset($post['DeleteItem'])) {
+		} else if (isset($post['DeleteItem'])) {
 			echo $this->app->DeleteItem();
 		}
 		if (isset($post['ImportCSV'])) {
 			echo $this->app->ImportCSV();
-		
-	}
-}
-
-	public function DropdownSubCategory(){
-		$post = $this->input->post();
-		if (isset($post['selected'])) {
-			$data['selected'] = $post['selected'];
 		}
-		$data['subcategory'] = $this->app->GetSubCategory();
+	}
+
+	public function DropdownSubCategory()
+	{
+		$post = $this->input->post();
+		$selected = 1;
+		if (isset($post['selected'])) {
+			$selected = $post['selected'];
+		}
+		$data['subcategory'] = $this->app->GetSubCategory($selected);
 		$this->load->view('dropdown', $data);
 	}
 }

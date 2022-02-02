@@ -14,7 +14,6 @@ function RemoveActive() {
   });
 }
 
-
 $(document).on("submit", "form", function (e) {
   e.preventDefault();
   var formdata = new FormData(e.originalEvent.srcElement);
@@ -30,6 +29,7 @@ $(document).on("submit", "form", function (e) {
     }
   });
 });
+
 $(document).on("change", "#category", function (event) {
   $.ajax({
     url: base_url + "App/DropdownSubCategory/",
@@ -54,6 +54,11 @@ $(document).on("click", "#BackItem", function (event) {
 $(document).on("click", "#EditItem", function (event) {
   LoadHeader('inventory_back');
   LoadMain('form', 'inventory_edit', this.getAttribute('value'));
+});
+
+$(document).on("click", "#HistoryItem", function (event) {
+  LoadHeader('inventory_back');
+  LoadMain('table', 'item_history', this.getAttribute('value'));
 });
 
 $(document).on("click", "#DeleteItem", function (event) {
@@ -116,6 +121,7 @@ function LoadMain(type, name, id = "") {
     }
   });
 }
+
 function Delete(table, id, button, type){
   var formdata = new FormData();
   formdata.append("table", table);
